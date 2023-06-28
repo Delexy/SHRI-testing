@@ -1,5 +1,3 @@
-const { assert } = require("chai");
-
 describe("Общие требования", async function () {
   describe("Вёрстка должна адаптироваться под ширину экрана", () => {
     it("Верстка соответсвует скриншоту на 1920", async function () {
