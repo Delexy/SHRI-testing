@@ -1,10 +1,8 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
-import { getAllByRole, getByRole, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 
-import { BrowserRouter } from 'react-router-dom';
-import { useHistory } from 'react-router';
 import { MemoryRouter } from 'react-router';
 import { Provider } from 'react-redux';
 

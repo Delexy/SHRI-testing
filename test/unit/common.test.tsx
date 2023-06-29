@@ -1,5 +1,5 @@
 import React from 'react';
-import { getAllByRole, getByRole, render, screen } from '@testing-library/react';
+import { getAllByRole, getByRole, render } from '@testing-library/react';
 
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
