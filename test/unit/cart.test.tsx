@@ -5,20 +5,23 @@ import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import { Application } from '../../src/client/Application';
-import { ProductDetails } from '../../src/client/components/ProductDetails';
 
 import { initStore } from '../../src/client/store';
 
-import { product, StubApi, products, StubCartApi } from './utils/Stubs';
+import { product, secondProduct, StubApi, StubCartApi } from './utils/Stubs';
 import { CartState } from '../../src/common/types';
+import { Cart } from '../../src/client/pages/Cart';
 
 describe('Корзина', () => {
-  it('В шапке рядом со ссылкой на корзину должно отображаться количество не повторяющихся товаров в ней', async () => {
-    const basename = '/catalog';
+  it('В корзине должна отображаться таблица с добавленными в нее товарами', async () => {
+    const basename = '/';
 
     const api = new StubApi('test');
 
-    const cart = new StubCartApi({});
+    const cart = new StubCartApi({
+      [product.id]: {...product, count: 5},
+      [secondProduct.id]: {...secondProduct, count: 20},
+    });
     // @ts-ignore
     const store = initStore(api, cart);
 
@@ -29,17 +32,88 @@ describe('Корзина', () => {
         </Provider>
       </MemoryRouter>
     );
-    const { queryByText, queryAllByRole, queryByRole } = render(application);
+    const { queryByText } = render(application);
     await waitFor(() => {
-      screen.logTestingPlaygroundURL();
-      expect(queryByText(products[0].name)).toBeInTheDocument();
-      expect(queryByText(`$${products[0].price}`)).toBeInTheDocument();
-      expect(queryByText(products[1].name)).toBeInTheDocument();
-      expect(queryByText(`$${products[1].price}`)).toBeInTheDocument();
-      expect(queryAllByRole('link', { name: `Details` })[0]).toBeInTheDocument();
-      expect(queryByText('hello item')).not.toBeInTheDocument();
-      expect(queryByText('hello item price')).not.toBeInTheDocument();
-      expect(queryByRole('link', { name: `/catalog/randomProductId` })).not.toBeInTheDocument();
+      expect(queryByText(`Cart (${Object.keys(cart.getState()).length})`)).toBeInTheDocument();
     });
+  });
+
+  it('Для каждого товара должны отображаться название, цена, количество , стоимость, а также должна отображаться общая сумма заказа', async () => {
+    const basename = '/';
+
+    const api = new StubApi('test');
+
+    const productCount = 5;
+    const cart = new StubCartApi({
+      [product.id]: {...product, count: productCount},
+      [secondProduct.id]: {...secondProduct, count: 1},
+    });
+    // @ts-ignore
+    const store = initStore(api, cart);
+
+    const application = (
+      <MemoryRouter initialEntries={[basename]}>
+        <Provider store={store}>
+          <Cart />
+        </Provider>
+      </MemoryRouter>
+    );
+    const { queryByText } = render(application);
+    await waitFor(() => {
+      expect(queryByText(product.name)).toBeInTheDocument();
+      expect(queryByText(`$${product.price}`)).toBeInTheDocument();
+      expect(queryByText(productCount)).toBeInTheDocument();
+      expect(queryByText(`$${productCount * product.price}`)).toBeInTheDocument();
+      expect(queryByText(`$${productCount * product.price + secondProduct.price}`)).toBeInTheDocument();
+    });
+  });
+
+  it('В корзине должна быть кнопка "очистить корзину", по нажатию на которую все товары должны удаляться', async () => {
+    const basename = '/';
+
+    const api = new StubApi('test');
+
+    const productCount = 5;
+    const cart = new StubCartApi({
+      [product.id]: {...product, count: productCount},
+    });
+    // @ts-ignore
+    const store = initStore(api, cart);
+
+    const application = (
+      <MemoryRouter initialEntries={[basename]}>
+        <Provider store={store}>
+          <Cart />
+        </Provider>
+      </MemoryRouter>
+    );
+    const { queryByText } = render(application);
+    const clearCartBtn = await waitFor(() => queryByText(/clear shopping cart/i));
+    clearCartBtn?.click();
+
+    expect(store.getState().cart).toStrictEqual({});
+  });
+
+  it('Если корзина пустая, должна отображаться ссылка на каталог товаров', async () => {
+    const basename = '/';
+
+    const api = new StubApi('test');
+    const cart = new StubCartApi({});
+    // @ts-ignore
+    const store = initStore(api, cart);
+
+    const application = (
+      <MemoryRouter initialEntries={[basename]}>
+        <Provider store={store}>
+          <Cart />
+        </Provider>
+      </MemoryRouter>
+    );
+    const { queryByRole } = render(application);
+    const clearCartBtn = await waitFor(() => queryByRole('link', {
+      name: 'catalog'
+    }));
+
+    expect(clearCartBtn).toBeInTheDocument();
   });
 });

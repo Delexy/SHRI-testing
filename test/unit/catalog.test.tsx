@@ -31,7 +31,6 @@ describe('Каталог', () => {
     );
     const { queryByText, queryAllByRole, queryByRole } = render(application);
     await waitFor(() => {
-      screen.logTestingPlaygroundURL();
       expect(queryByText(products[0].name)).toBeInTheDocument();
       expect(queryByText(`$${products[0].price}`)).toBeInTheDocument();
       expect(queryByText(products[1].name)).toBeInTheDocument();

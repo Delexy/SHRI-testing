@@ -46,3 +46,4 @@ export const products: ProductShortInfo[] = [
 ];
 
 export const product: ProductType = { ...products[0], description: 'product description', material: 'product material', color: 'product color' };
+export const secondProduct: ProductType = { ...products[1], description: 'second product description', material: 'second product material', color: 'second product color' };

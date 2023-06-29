@@ -8,7 +8,10 @@
         "test:e2e:gui": "node_modules\\.bin\\hermione gui",
         "test": "npm run test:unit && npm run test:e2e",
         "build": "webpack --mode=production --node-env=production",
-        "watch": "webpack --watch"
+        "watch": "webpack --watch",
+        "test:unit-5": "cross-env BUG_ID=5 jest",
+        "test:unit-6": "cross-env BUG_ID=6 jest",
+        "test:unit-7": "cross-env BUG_ID=7 jest"
     },
     "dependencies": {
         "@bem-react/classname": "^1.5.12",
@@ -45,6 +48,7 @@
         "@types/react-router-dom": "^5.3.1",
         "@types/webpack": "^5.28.0",
         "chai": "^4.3.7",
+        "cross-env": "^7.0.3",
         "css-loader": "^6.3.0",
         "hermione": "^5.6.1",
         "html-webpack-plugin": "^5.3.2",
