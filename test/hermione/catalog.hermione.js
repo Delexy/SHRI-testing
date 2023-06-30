@@ -6,21 +6,28 @@ describe("Каталог", async function () {
   
     await page.goto("http://localhost:3000/hw/store");
   
+    const cartLink = await browser.$('.navbar [href*="/cart"]');
+    await cartLink.click();
+    await browser.pause(500);
+    await browser.assertView("cart-start", "body", {
+      delay: 1000
+    });
     const catalogLink = await browser.$('[href*="/catalog"]');
     await catalogLink.click();
     const itemDetailsLink = await browser.$('[href*="/catalog/"]');
     await itemDetailsLink.click();
     const addToCartBtn = await browser.$('.ProductDetails-AddToCart');
     await addToCartBtn.click();
-
-    await browser.assertView("plain", ".navbar-nav", {
+    await cartLink.click();
+    
+    await browser.assertView("cart-before-reload", ".Cart-Table", {
       delay: 1000
     });
     
     await page.reload();
-
-    await browser.assertView("plain", ".navbar-nav", {
-      delay: 2000
+    await browser.pause(500);
+    await browser.assertView("cart-after-reload", ".Cart-Table", {
+      delay: 1000
     });
   });
   });

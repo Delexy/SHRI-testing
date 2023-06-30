@@ -24,7 +24,8 @@ describe("Общие требования", async function () {
     const puppeteer = await browser.getPuppeteer();
     const [page] = await puppeteer.pages();
 
-    await page.goto("http://localhost:3000/hw/store");
+    // await page.goto("http://localhost:3000/hw/store");
+    await page.goto("http://localhost:3000/hw/store?BUG_ID=4"); // Проверка бага
 
     await page.waitForSelector('.navbar', {timeout: 5000});
     await browser.assertView("plain", ".navbar");

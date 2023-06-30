@@ -21,7 +21,7 @@ export class StubApi implements ExampleApi {
 }
 
 
-export class StubCartApi {
+export class StubCartApi implements CartApi {
   initialState: CartState;
 
   constructor(initialState: CartState) {
