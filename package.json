@@ -11,7 +11,8 @@
         "watch": "webpack --watch",
         "test:unit-5": "cross-env BUG_ID=5 jest",
         "test:unit-6": "cross-env BUG_ID=6 jest",
-        "test:unit-7": "cross-env BUG_ID=7 jest"
+        "test:unit-7": "cross-env BUG_ID=7 jest",
+        "test:unit-10": "cross-env BUG_ID=10 jest"
     },
     "dependencies": {
         "@bem-react/classname": "^1.5.12",
@@ -59,6 +60,7 @@
         "sass": "^1.42.1",
         "sass-loader": "^12.1.0",
         "style-loader": "^3.3.0",
+        "supertest": "^6.3.3",
         "ts-jest": "^29.0.3",
         "ts-loader": "^9.2.6",
         "ts-node": "^10.3.0",

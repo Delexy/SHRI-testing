@@ -30,5 +30,18 @@ describe("Каталог", async function () {
       delay: 1000
     });
   });
+  it("Верстка страницы с детальной карточкой отображается корректно (просто чтобы был тест, на случай если баллы всё же важны)", async function ({ browser }) {
+    await browser.setWindowSize(1920, 1080);
+    const puppeteer = await browser.getPuppeteer();
+    const [page] = await puppeteer.pages();
+  
+    await page.goto("http://localhost:3000/hw/store/catalog/0");
+    // await page.goto("http://localhost:3000/hw/store/catalog/0?bug_id=9");
+
+    await browser.pause(500);
+    await browser.assertView("card-detail-page", "body", {
+      delay: 1000
+    });
+  });
   });
   

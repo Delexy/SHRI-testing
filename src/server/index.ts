@@ -11,10 +11,6 @@ app.use(basename, router);
 app.use(basename, express.static("dist"));
 
 const server = app.listen(port, "::", () => {
-  // @ts-ignore
-  var host = server.address().address;
-  // @ts-ignore
-  var port = server.address().port;
   console.log(`Example app listening at http://localhost:${port}${basename}`);
 });
 
