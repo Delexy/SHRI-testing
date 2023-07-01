@@ -29,6 +29,13 @@ describe("Каталог", async function () {
     await browser.assertView("cart-after-reload", ".Cart-Table", {
       delay: 1000
     });
+
+    
+    // Очистка корзины
+    const contactsLink = await browser.$('[href*="/cart"]');
+    await contactsLink.click();
+    const cartClearBtn = await browser.$('.Cart-Clear');
+    await cartClearBtn?.click();
   });
   it("Верстка страницы с детальной карточкой отображается корректно (просто чтобы был тест, на случай если баллы всё же важны)", async function ({ browser }) {
     await browser.setWindowSize(1920, 1080);

@@ -1,20 +1,31 @@
-const request = require("supertest");
-import express from "express";
-import { router } from "../../src/server/routes";
-const app = express();
-app.use(express.json());
-app.use("/", router);
+// @ts-nocheck
+const request = require('supertest');
+let app;
+beforeAll(async () => {
+  app = (await import('../../src/server/index')).default;
+});
 
-describe("Тестирование сервера", () => {
-  beforeAll(async () => {
-    expect.hasAssertions();
-
-    createUserResponse = await request(app).post("/api/user/").send({ email: USER_EMAIL, password: USER_PASSWORD });
-    authUserResponse = await request(app).post("/api/user/auth").send({ email: USER_EMAIL, password: USER_PASSWORD });
-    user = createUserResponse.body;
-    authResponse = authUserResponse.body;
+describe('Тестирование сервера', () => {
+  it('Сервер отдает корректную информацию при запросе по ID', async () => {
+    const productId = 1;
+    const res = await request(app).get(`/hw/store/api/products/${productId}${process.env['BUG_ID'] == 3 ? '?bug_id=3' : ''}`);
+    expect(res.status).toBe(200);
+    expect(res.body.id).toBe(productId);
   });
-  afterAll(() => {
-    User.destroy({ where: { id: user.id } });
+
+  it('Сервер отдает полную краткую информацию при запросе', async () => {
+    const res = await request(app).get(`/hw/store/api/products${process.env['BUG_ID'] == 1 ? '?bug_id=1' : ''}`);
+    expect(res.status).toBe(200);
+    const firstProduct = res.body[0];
+    expect(firstProduct).toHaveProperty('id');
+    expect(firstProduct).toHaveProperty('name');
+    expect(firstProduct).toHaveProperty('price');
+  });
+
+  it('Сервер при оформлении заказа отдает корректный ID заказа', async () => {
+    const res = await request(app).post(`/hw/store/api/checkout${process.env['BUG_ID'] == 2 ? '?bug_id=2' : ''}`);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty('id');
+    expect(+res.body.id).toBeLessThanOrEqual(1000000);
   });
 });
