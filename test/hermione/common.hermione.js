@@ -1,10 +1,3 @@
-beforeEach(async ({ browser }) => {
-  const contactsLink = await browser.$('[href*="/cart"]');
-  await contactsLink.click();
-  const cartClearBtn = await browser.$('.Cart-Clear');
-  await cartClearBtn?.click();
-});
-
 describe("Общие требования", async function () {
   describe("Вёрстка должна адаптироваться под ширину экрана", () => {
     it("Верстка соответсвует скриншоту на 1920", async function () {

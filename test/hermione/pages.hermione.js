@@ -14,6 +14,7 @@ describe('Страницы', async function () {
     await browser.assertView('delivery-page', 'body', {
       screenshotDelay: '1000',
     });
+    const contactsLink = await browser.$('[href*="/cart"]');
     await contactsLink.click();
     await browser.assertView('contacts-page', 'body', {
       screenshotDelay: '1000',
