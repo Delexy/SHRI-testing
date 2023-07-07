@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { getByLabelText, render, screen, waitFor } from "@testing-library/react";
